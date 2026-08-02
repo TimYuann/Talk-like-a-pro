@@ -91,7 +91,6 @@ Talk-like-a-pro/
 ├── package.json        # pi-package manifest
 ├── README.md           # this file (English)
 ├── README.zh-CN.md     # 中文版
-├── AGENTS.md           # agent-facing dev rules
 ├── LICENSE             # MIT
 └── .gitignore
 ```

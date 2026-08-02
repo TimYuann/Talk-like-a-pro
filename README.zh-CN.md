@@ -89,9 +89,8 @@ Talk-like-a-pro/
 ├── extensions/
 │   └── translator.ts   # 唯一源文件
 ├── package.json        # pi-package 清单
-├── README.md           # 本文件（英文版）
+├── README.md           # 英文版
 ├── README.zh-CN.md     # 中文版
-├── AGENTS.md           # agent 开发规则
 ├── LICENSE             # MIT
 └── .gitignore
 ```
