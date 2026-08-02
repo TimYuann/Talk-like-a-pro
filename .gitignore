@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.log
+
+# Local backups (rollback copies, not for publication)
+*.bak-*
+
+# Internal development log (agent operation history, not for publication)
+ACTIVE_STATES

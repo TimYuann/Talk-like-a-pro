@@ -1,0 +1,26 @@
+{
+	"name": "talk-like-a-pro",
+	"version": "1.0.0",
+	"description": "Pi extension that turns vague coding requests (\"帮我弄一下 X\") into precise, executable prompts: probes project context, asks clarifying questions when intent is ambiguous, then hands the coding agent a complete refined prompt. Configurable detail level (beginner/standard), analyzer model, and thinking effort. Falls back to pass-through on any failure, so it never blocks.",
+	"license": "MIT",
+	"type": "module",
+	"keywords": [
+		"pi-package",
+		"pi",
+		"extension",
+		"translator",
+		"prompt-refiner",
+		"vibe-coding",
+		"prompt-engineering"
+	],
+	"files": [
+		"extensions/**",
+		"README.md",
+		"package.json"
+	],
+	"pi": {
+		"extensions": [
+			"./extensions/translator.ts"
+		]
+	}
+}
