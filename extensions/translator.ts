@@ -320,7 +320,7 @@ function buildAnalyzerPrompt(
 		'  "isAmbiguous": boolean,',
 		'  "confidence": 0-1,                  // 0=very clear, 1=very ambiguous',
 		'  "reason": string,                    // Chinese, shown to user as status notification',
-		'  "refinedPrompt": string,             // Complete prompt for the coding agent (use template below)',
+		'  "refinedPrompt": string,             // Complete prompt for the coding agent (use template below); ≤500 chars',
 		'  "questions": [                       // Only when isAmbiguous=true; 1-3 questions',
 		"    {",
 		'      "id": string,',
@@ -466,6 +466,8 @@ async function callAnalyzer(
 		reasoningEffort: effort,
 		cacheRetention: "none",
 		sessionId: uuidv7(),
+		// 输出上限：足以容纳全部字段 + ~500 char refinedPrompt，但防止跑题导致半截 JSON
+		maxTokens: 1500,
 	};
 
 	// 单次 complete 调用，返回文本内容
@@ -505,12 +507,16 @@ async function callAnalyzer(
 	try {
 		return parseAnalysis(text);
 	} catch (parseErr: any) {
-		// parse 失败时重试一次，prompt 加强
+		// parse 失败时重试一次：把 broken 输出喂回 LLM，让它知道上次哪里坏了
 		console.error("Talk like a Pro: parse failed, retrying:", parseErr?.message || parseErr);
-		const retryText = await runOnce(
-			effort,
-			`${prompt}\n\nIMPORTANT: Reply with ONLY a valid JSON object. No markdown fence, no prose, no explanation.`,
-		);
+		const broken = text.trim().slice(0, 500);
+		const retryPrompt =
+			`${prompt}\n\n` +
+			`Your previous output failed to parse as JSON (${(parseErr as Error)?.message ?? "parse error"}). ` +
+			"Reply with ONLY a valid JSON object. No markdown fence, no prose, no explanation. " +
+			"Repair the broken output below if needed:\n" +
+			`<broken_output>\n${broken}\n</broken_output>`;
+		const retryText = await runOnce(effort, retryPrompt);
 		return parseAnalysis(retryText); // 再失败就 throw
 	}
 }
