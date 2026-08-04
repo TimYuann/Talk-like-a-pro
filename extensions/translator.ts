@@ -106,6 +106,16 @@ const FUZZY_KEYWORDS =
 const HAS_SPECIFIC_TARGET =
 	/\b\w+\.(ts|js|py|go|rs|java|tsx|jsx|md|json|yaml|yml|toml|sh)\b|\b(src|test|lib|dist|build)\/|\b(function|class|method|api|endpoint|module|component|interface|type|struct|enum)\b|\b\w+\(\)/i;
 
+// 对话控制指令：确认/继续/开始/同意类短指令，不是模糊需求，直接 pass。
+// 多段式：一个或多个控制词（允许中间标点），结尾只允许语气词/标点。
+// 后面带实际内容（如“确认执行后记得测试”）不匹配，仍走启发式。
+const CONTROL_WORD =
+	"确认执行|确认|执行|继续执行|继续|开始吧|开始|好的|好|可以|行|没问题|就这样|就这个|就这么办|动手|搞起|收到|明白|了解|知道了|ok|okay|yes|yep|sure|go ahead|go|continue|proceed|do it|start|begin|alright|fine|got it|understood";
+const CONTROL_COMMANDS = new RegExp(
+	`^(?:${CONTROL_WORD})(?:[。，！!.,\\s]*(?:${CONTROL_WORD}))*[吧啊呀哈了哦。，！!.,\\s]*$`,
+	"i",
+);
+
 /**
  * 启发式判断是否值得走 LLM 分析。
  * 返回 true = 可能是模糊需求，进 LLM 二次判定。
@@ -113,6 +123,8 @@ const HAS_SPECIFIC_TARGET =
 function shouldConsiderFuzzy(text: string): boolean {
 	const stripped = text.replace(/^\/[!!]?\s*/, "").trim();
 	if (stripped.length < 3) return false;
+	// 对话控制指令（确认/继续/开始/同意）→ 不是模糊需求，直接 pass
+	if (CONTROL_COMMANDS.test(stripped)) return false;
 	// 长 + 有具体目标 → 大概率不需要翻译
 	if (stripped.length > 80 && HAS_SPECIFIC_TARGET.test(stripped)) return false;
 	// 含模糊关键词 → 几乎一定是模糊需求
