@@ -54,7 +54,7 @@ The analyzer model picker lists the current session's scoped models, or (when no
 | `/! xxx` | Force skip (strips prefix, passes through) |
 | (no prefix) | Heuristic decides (when enabled) |
 
-Heuristic rules: enters translator when the input contains vague verbs (`弄/搞/整/修一下/加个/...`) or is shorter than ~15 chars without a specific target (file path, function name, etc.). Longer inputs with concrete targets pass through unchanged.
+Heuristic rules: enters translator when the input contains vague verbs (`弄/搞/整/修一下/加个/...`) or is shorter than ~15 chars without a specific target (file path, function name, etc.). Longer inputs with concrete targets pass through unchanged. Conversation control phrases (确认/继续/开始/同意/OK/continue/...) are always passed through — they confirm or steer, they are not vague requests.
 
 ## Effort safety net
 

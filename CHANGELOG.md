@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) — but while the version is `0.x.y`, any `minor` bump may break behavior.
 
+## [v0.1.1] - 2026-08-01
+
+### Fixed
+
+- Conversation control phrases (确认执行/继续/开始/OK/continue/...) no longer trigger the translator — they confirm or steer, they are not vague requests (multi-segment matcher, tolerant of conjunctions like 好的，开始吧)
+
 ## [v0.1.0] - 2026-08-01
 
 First release — minimal usable version: vague request in, precise prompt out.
