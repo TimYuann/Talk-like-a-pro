@@ -1,6 +1,6 @@
 {
 	"name": "talk-like-a-pro",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Pi extension that turns vague coding requests (\"帮我弄一下 X\") into precise, executable prompts: probes project context, asks clarifying questions when intent is ambiguous, then hands the coding agent a complete refined prompt. Configurable detail level (beginner/standard), analyzer model, and thinking effort. Falls back to pass-through on any failure, so it never blocks.",
 	"license": "MIT",
 	"type": "module",
